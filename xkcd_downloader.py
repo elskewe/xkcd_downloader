@@ -34,9 +34,10 @@ class xkcd_downloader:
             return requests.get(f"http://xkcd.com/{comic_number}/info.0.json", timeout=5).json()
 
     def text_wrap(self, font: ImageFont.FreeTypeFont, text: str, image_width, i=0):
-        lines: list[list[str]] = [[]]
+        lines: list[list[str]] = []
         text_split = text.split(" ")
         while len(text_split) > 0:
+            lines.append([])
             while len(text_split) > 0 \
                     and font.getlength(" ".join(lines[i])) < image_width:
                 if font.getlength(text_split[0]+" "+" ".join(lines[i])) \
@@ -49,7 +50,6 @@ class xkcd_downloader:
                 lines[i].append(text_split[0])
                 text_split.pop(0)
             i += 1
-            lines.append([])
         lines = [line for line in lines if len(line) != 0]
         return lines
 
