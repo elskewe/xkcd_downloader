@@ -24,7 +24,7 @@ class xkcd_downloader:
         self.alt_fontsize = 18
         self.line_offset = 10
 
-    def download_json(self, comic_number):
+    def download_json(self, comic_number) -> dict:
         if comic_number < 0:
             raise ValueError
 
