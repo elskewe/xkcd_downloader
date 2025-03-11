@@ -50,22 +50,7 @@ class xkcd_downloader:
                 text_split.pop(0)
             i += 1
             lines.append([])
-        sub = []
-        for i, line in enumerate(lines):
-            if font.getlength(" ".join(line)) > image_width:
-                temp_str = ""
-                for c in "".join(line):
-                    if font.getsize(temp_str+c)[0] > image_width:
-                        #TODO: check if this code is needed
-                        lines[line] = lines[line][:len(lines[line])//2] \
-                            + lines[line][len(lines[line])//2:]
-                        break
-                    temp_str += c
-                sub.append(temp_str)
-                del lines[i]
         lines = [line for line in lines if len(line) != 0]
-        for c in [e for e in sub if len(e) != 0]:
-            lines.append(c)
         return lines
 
     def add_text(self, image, title: str, alt: str, tfont='xkcd.ttf',
