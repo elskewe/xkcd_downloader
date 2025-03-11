@@ -1,6 +1,9 @@
 XKCD Downloader
 ===============
 
+Installation
+------------
+
 Install dependencies with:
 ```shell
 python -m pip install -r requirements.txt
