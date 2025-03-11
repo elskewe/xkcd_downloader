@@ -131,7 +131,7 @@ class xkcd_downloader:
             print("Error: URL could not be retrieved")
             return
         title, alt, num = info['safe_title'], info['alt'], str(info['num'])
-        image = num + search("\.([a-z])+$", info['img']).group()
+        image = num + search(r"\.([a-z])+$", info['img']).group()
         with open(self.download_dir+'/'+image, 'wb') as image_file:
             url = info['img']
             url_2x = re.sub(r"(\.\w+)$", "_2x\\1", url)
@@ -145,7 +145,7 @@ class xkcd_downloader:
                 if block:
                     image_file.write(block)
                     image_file.flush()
-            if not download_only and not search("\.gif", info['img']):
+            if not download_only and not search(r"\.gif", info['img']):
                 print("Processing comic -> {0}".format(comic_number))
                 self.add_text(self.download_dir+'/'+image, title, alt, scaling=scaling)
 
