@@ -119,7 +119,6 @@ class xkcd_downloader:
         img.save(image)
 
     def download_images(self, comic_number, download_only):
-        images = []
         if comic_number == 404:
             return
         if comic_number == 0:
