@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import re
 from random import randrange
 from re import search
 import argparse
@@ -132,7 +133,12 @@ class xkcd_downloader:
         title, alt, num = info['safe_title'], info['alt'], str(info['num'])
         image = num+search("\.([a-z])+$", info['img']).group()
         with open(self.download_dir+'/'+image, 'wb') as image_file:
-            req = requests.get(info['img'], stream=True, timeout=5)
+            url = info['img']
+            url_2x = re.sub(r"(\.\w+)$", "_2x\\1", url)
+            req = requests.get(url_2x, stream=True, timeout=5)
+            if req.status_code != 200:
+                # for old comics, only the 1x image is available
+                req = requests.get(url, stream=True, timeout=5)
             for block in req.iter_content(1024):
                 if block:
                     image_file.write(block)
