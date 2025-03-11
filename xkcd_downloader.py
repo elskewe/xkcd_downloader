@@ -51,20 +51,20 @@ class xkcd_downloader:
             i += 1
             lines.append([])
         sub = []
-        for e, i in enumerate(lines):
-            if font.getlength(" ".join(lines[e])) > image_width:
+        for i, line in enumerate(lines):
+            if font.getlength(" ".join(lines[i])) > image_width:
                 temp_str = ""
-                for c in "".join(i):
+                for c in "".join(line):
                     if font.getsize(temp_str+c)[0] > image_width:
                         #TODO: check if this code is needed
-                        lines[i] = lines[i][:len(lines[i])//2] \
-                            + lines[i][len(lines[i])//2:]
+                        lines[line] = lines[line][:len(lines[line])//2] \
+                            + lines[line][len(lines[line])//2:]
                         break
                     temp_str += c
                 sub.append(temp_str)
-                del lines[e]
-        lines = [i for i in lines if len(i) != 0]
-        for c in [i for i in sub if len(i) != 0]:
+                del lines[i]
+        lines = [l for l in lines if len(l) != 0]
+        for c in [l for l in sub if len(l) != 0]:
             lines.append(c)
         return lines
 
