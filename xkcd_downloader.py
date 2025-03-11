@@ -35,7 +35,7 @@ class xkcd_downloader:
             return None
 
     def text_wrap(self, font: ImageFont.FreeTypeFont, text: str, image_width, i=0):
-        lines = [[]]
+        lines: list[list[str]] = [[]]
         text_split = text.split(" ")
         while len(text_split) > 0:
             while len(text_split) > 0 \
@@ -57,6 +57,7 @@ class xkcd_downloader:
                 temp_str = ""
                 for c in "".join(i):
                     if font.getsize(temp_str+c)[0] > image_width:
+                        #TODO: check if this code is needed
                         lines[i] = lines[i][:len(lines[i])//2] \
                             + lines[i][len(lines[i])//2:]
                         break
