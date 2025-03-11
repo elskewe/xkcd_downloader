@@ -52,7 +52,7 @@ class xkcd_downloader:
             lines.append([])
         sub = []
         for i, line in enumerate(lines):
-            if font.getlength(" ".join(lines[i])) > image_width:
+            if font.getlength(" ".join(line)) > image_width:
                 temp_str = ""
                 for c in "".join(line):
                     if font.getsize(temp_str+c)[0] > image_width:
