@@ -71,15 +71,15 @@ class xkcd_downloader:
         return lines
 
     def add_text(self, image, title: str, alt: str, tfont='xkcd.ttf',
-                 afont='xkcd.ttf'):
+                 afont='xkcd.ttf', scaling=1):
 
         try:
             img = Image.open(image)
         except OSError:
             return
 
-        tfont = ImageFont.truetype("xkcd.ttf", self.title_fontsize)
-        afont = ImageFont.truetype("xkcd.ttf", self.alt_fontsize)
+        tfont = ImageFont.truetype("xkcd.ttf", self.title_fontsize*scaling)
+        afont = ImageFont.truetype("xkcd.ttf", self.alt_fontsize*scaling)
         line_padding = 5
         draw = ImageDraw.Draw(img)
         lines = self.text_wrap(tfont, title, img.size[0])
@@ -136,16 +136,18 @@ class xkcd_downloader:
             url = info['img']
             url_2x = re.sub(r"(\.\w+)$", "_2x\\1", url)
             req = requests.get(url_2x, stream=True, timeout=5)
+            scaling = 2
             if req.status_code != 200:
                 # for old comics, only the 1x image is available
                 req = requests.get(url, stream=True, timeout=5)
+                scaling = 1
             for block in req.iter_content(1024):
                 if block:
                     image_file.write(block)
                     image_file.flush()
             if not download_only and not search("\.gif", info['img']):
                 print("Processing comic -> {0}".format(comic_number))
-                self.add_text(self.download_dir+'/'+image, title, alt)
+                self.add_text(self.download_dir+'/'+image, title, alt, scaling=scaling)
 
     def download_all(self, download_only):
         for i in range(1, self.download_json(0)['num']+1):
