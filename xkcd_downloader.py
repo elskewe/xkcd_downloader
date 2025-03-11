@@ -63,8 +63,8 @@ class xkcd_downloader:
                     temp_str += c
                 sub.append(temp_str)
                 del lines[i]
-        lines = [l for l in lines if len(l) != 0]
-        for c in [l for l in sub if len(l) != 0]:
+        lines = [line for line in lines if len(line) != 0]
+        for c in [e for e in sub if len(e) != 0]:
             lines.append(c)
         return lines
 
