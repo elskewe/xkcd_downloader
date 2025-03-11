@@ -68,7 +68,7 @@ class xkcd_downloader:
             lines.append(c)
         return lines
 
-    def add_text(self, image, title, alt, tfont='xkcd.ttf',
+    def add_text(self, image, title: str, alt: str, tfont='xkcd.ttf',
                  afont='xkcd.ttf'):
 
         try:
