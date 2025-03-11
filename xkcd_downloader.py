@@ -34,21 +34,21 @@ class xkcd_downloader:
         except (requests.exceptions.ConnectionError, ValueError):
             return None
 
-    def text_wrap(self, font, text, image_width, i=0):
+    def text_wrap(self, font: ImageFont.FreeTypeFont, text: str, image_width, i=0):
         lines = [[]]
-        text = text.split(" ")
-        while len(text) > 0:
-            while len(text) > 0 \
+        text_split = text.split(" ")
+        while len(text_split) > 0:
+            while len(text_split) > 0 \
                     and font.getlength(" ".join(lines[i])) < image_width:
-                if font.getlength(text[0]+" "+" ".join(lines[i])) \
+                if font.getlength(text_split[0]+" "+" ".join(lines[i])) \
                         > image_width*0.95:
                     if len(lines[i]) == 0:
-                        text[0] = text[0][:len(text[0])//2+1] \
-                            + " " + text[0][:len(text[0])//2+1:]
-                        text = text[0].split(" ") + text[1:]
+                        text_split[0] = text_split[0][:len(text_split[0])//2+1] \
+                            + " " + text_split[0][:len(text_split[0])//2+1:]
+                        text_split = text_split[0].split(" ") + text_split[1:]
                     break
-                lines[i].append(text[0])
-                text.pop(0)
+                lines[i].append(text_split[0])
+                text_split.pop(0)
             i += 1
             lines.append([])
         sub = []
