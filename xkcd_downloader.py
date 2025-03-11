@@ -41,8 +41,8 @@ class xkcd_downloader:
         text = text.split(" ")
         while len(text) > 0:
             while len(text) > 0 \
-                    and font.getsize(" ".join(lines[i]))[0] < image_width:
-                if font.getsize(text[0]+" "+" ".join(lines[i]))[0] \
+                    and font.getlength(" ".join(lines[i])) < image_width:
+                if font.getlength(text[0]+" "+" ".join(lines[i])) \
                         > image_width*0.95:
                     if len(lines[i]) == 0:
                         text[0] = text[0][:len(text[0])//2+1] \
@@ -55,7 +55,7 @@ class xkcd_downloader:
             lines.append([])
         sub = []
         for e, i in enumerate(lines):
-            if font.getsize(" ".join(lines[e]))[0] > image_width:
+            if font.getlength(" ".join(lines[e])) > image_width:
                 temp_str = ""
                 for c in "".join(i):
                     if font.getsize(temp_str+c)[0] > image_width:
@@ -80,12 +80,10 @@ class xkcd_downloader:
 
         tfont = ImageFont.truetype("xkcd.ttf", self.title_fontsize)
         afont = ImageFont.truetype("xkcd.ttf", self.alt_fontsize)
-        twidth, theight = tfont.getsize(title)
-        awidth, aheight = afont.getsize(alt)
         line_padding = 5
         draw = ImageDraw.Draw(img)
         lines = self.text_wrap(tfont, title, img.size[0])
-        lheight = max([tfont.getsize(" ".join(i))[1] for i in lines])
+        lheight = max([tfont.getbbox(" ".join(i))[3] for i in lines])
         lheight_total = (lheight+line_padding)*(len(lines))+line_padding*4
         title_crop = (0, -1*lheight_total, img.size[0], img.size[1])
         img = img.crop(title_crop)
@@ -94,7 +92,7 @@ class xkcd_downloader:
         draw = ImageDraw.Draw(img)
         lheight_total = line_padding
         for i in lines:
-            draw.text((w/2-tfont.getsize(" ".join(i))[0]/2,
+            draw.text((w/2-tfont.getlength(" ".join(i))/2,
                       lheight_total),
                       " ".join(i),
                       font=tfont,
@@ -102,7 +100,7 @@ class xkcd_downloader:
             lheight_total += lheight + line_padding
         lheight_total = line_padding
         lines = self.text_wrap(afont, alt, w)
-        lheight = max([afont.getsize(" ".join(i))[1] for i in lines])
+        lheight = max([afont.getbbox(" ".join(i))[3] for i in lines])
         lheight_total = lheight*len(lines)
         alt_crop = (0, 0, img.size[0],
                     img.size[1]+lheight_total+(len(lines)+3)*line_padding)
@@ -112,7 +110,7 @@ class xkcd_downloader:
         for i in lines:
             if not i:
                 continue
-            draw.text((w/2-afont.getsize(" ".join(i))[0]/2,
+            draw.text((w/2-afont.getlength(" ".join(i))/2,
                       lheight_total),
                       " ".join(i),
                       font=afont,
