@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 
-from PIL import Image, ImageDraw, ImageFont
-from requests import get
 from random import randrange
-from textwrap import wrap
-from json import loads
 from re import search
 import argparse
 import os
+
+from PIL import Image, ImageDraw, ImageFont
+from requests import get
 
 
 class xkcd_downloader:
