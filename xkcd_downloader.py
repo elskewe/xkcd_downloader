@@ -30,8 +30,7 @@ class xkcd_downloader:
             if comic_number == 0:
                 return requests.get("http://xkcd.com/info.0.json", timeout=5).json()
             else:
-                return requests.get("http://xkcd.com/{0}/info.0.json".
-                                     format(comic_number), timeout=5).json()
+                return requests.get(f"http://xkcd.com/{comic_number}/info.0.json", timeout=5).json()
         except (requests.exceptions.ConnectionError, ValueError):
             return None
 
