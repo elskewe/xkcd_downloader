@@ -146,7 +146,7 @@ class xkcd_downloader:
                     image_file.write(block)
                     image_file.flush()
             if not download_only and not search(r"\.gif", info['img']):
-                print("Processing comic -> {0}".format(comic_number))
+                print(f"Processing comic -> {comic_number}")
                 self.add_text(self.download_dir+'/'+image, title, alt, scaling=scaling)
 
     def download_all(self, download_only):
@@ -201,9 +201,9 @@ def main():
 
     if args.random:
         if args.N:
-            raise argparse.ArgumentTypeError("'{0}': Value may not be used\
+            raise argparse.ArgumentTypeError("'{args.N}': Value may not be used\
                                              in addition to the --random\
-                                             flag".format(args.N))
+                                             flag")
         return x.download_random(args.download_only, args.random)
     else:
         if not args.N:
