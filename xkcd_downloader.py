@@ -123,9 +123,9 @@ class xkcd_downloader:
         if comic_number == 404:
             return
         if comic_number == 0:
-            print("Fetching comic -> Latest".format(comic_number))
+            print("Fetching comic -> Latest")
         else:
-            print("Fetching comic -> {0}".format(comic_number))
+            print(f"Fetching comic -> {comic_number}")
         info = self.download_json(comic_number)
         if not info:
             print("Error: URL could not be retrieved")
