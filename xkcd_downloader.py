@@ -158,7 +158,7 @@ class xkcd_downloader:
         if not info:
             raise Exception("Error URL could not be reached!")
         else:
-            for i in range(iterations):
+            for _ in range(iterations):
                 self.download_images(randrange(1, info['num']+1),
                                      download_only)
 
