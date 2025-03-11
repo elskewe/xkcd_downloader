@@ -26,14 +26,12 @@ class xkcd_downloader:
 
     def download_json(self, comic_number):
         if comic_number < 0:
-            return None
-        try:
-            if comic_number == 0:
-                return requests.get("http://xkcd.com/info.0.json", timeout=5).json()
-            else:
-                return requests.get(f"http://xkcd.com/{comic_number}/info.0.json", timeout=5).json()
-        except (requests.exceptions.ConnectionError, ValueError):
-            return None
+            raise ValueError
+
+        if comic_number == 0:
+            return requests.get("http://xkcd.com/info.0.json", timeout=5).json()
+        else:
+            return requests.get(f"http://xkcd.com/{comic_number}/info.0.json", timeout=5).json()
 
     def text_wrap(self, font: ImageFont.FreeTypeFont, text: str, image_width, i=0):
         lines: list[list[str]] = [[]]
@@ -126,10 +124,12 @@ class xkcd_downloader:
             print("Fetching comic -> Latest")
         else:
             print(f"Fetching comic -> {comic_number}")
-        info = self.download_json(comic_number)
-        if not info:
+        try:
+            info = self.download_json(comic_number)
+        except requests.exceptions.ConnectionError:
             print("Error: URL could not be retrieved")
             return
+
         title, alt, num = info['safe_title'], info['alt'], str(info['num'])
         image = num + search(r"\.([a-z])+$", info['img']).group()
         with open(self.download_dir+'/'+image, 'wb') as image_file:
@@ -155,12 +155,8 @@ class xkcd_downloader:
 
     def download_random(self, download_only, iterations=1):
         info = self.download_json(0)
-        if not info:
-            raise Exception("Error URL could not be reached!")
-        else:
-            for _ in range(iterations):
-                self.download_images(randrange(1, info['num']+1),
-                                     download_only)
+        for _ in range(iterations):
+            self.download_images(randrange(1, info['num']+1), download_only)
 
 
 def main():
