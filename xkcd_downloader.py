@@ -6,7 +6,7 @@ import argparse
 import os
 
 from PIL import Image, ImageDraw, ImageFont
-from requests import get
+import requests
 
 
 class xkcd_downloader:
@@ -28,10 +28,10 @@ class xkcd_downloader:
             return None
         try:
             if comic_number == 0:
-                return get("http://xkcd.com/info.0.json").json()
+                return requests.get("http://xkcd.com/info.0.json").json()
             else:
-                return get("http://xkcd.com/{0}/info.0.json".
-                           format(comic_number)).json()
+                return requests.get("http://xkcd.com/{0}/info.0.json".
+                                     format(comic_number)).json()
         except (requests.exceptions.ConnectionError, ValueError):
             return None
 
@@ -133,7 +133,7 @@ class xkcd_downloader:
         title, alt, num = info['safe_title'], info['alt'], str(info['num'])
         image = num+search("\.([a-z])+$", info['img']).group()
         with open(self.download_dir+'/'+image, 'wb') as image_file:
-            req = get(info['img'], stream=True)
+            req = requests.get(info['img'], stream=True)
             for block in req.iter_content(1024):
                 if block:
                     image_file.write(block)
