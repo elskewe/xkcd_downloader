@@ -1,9 +1,9 @@
 XKCD Downloader
 ===============
 
-Python modules required: Pillow, requests
+Install dependencies with:
 ```shell
-sudo pip install Pillow requests
+python -m pip install -r requirements.txt
 ```
 Example-usage
 -------------
